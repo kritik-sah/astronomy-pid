@@ -1,8 +1,7 @@
 import CardWrapper from "@/components/PictureCard/CardWrapper";
 import Spotlight from "@/components/Spotlight/Spotlight";
 import { Suspense } from "react";
-import Loading from "./loading";
-import SimpleCardWrapper from "@/components/PictureCard/SimpleCardWrapper";
+import Loading from "./Loading";
 
 async function getData() {
   const res = await fetch(
