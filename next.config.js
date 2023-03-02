@@ -3,6 +3,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-}
+  images: {
+    domains: ["apod.nasa.gov", "img.youtube.com"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
