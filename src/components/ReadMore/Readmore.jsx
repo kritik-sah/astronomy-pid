@@ -12,7 +12,7 @@ const Readmore = ({ data }) => {
           setIsOpenModal(true);
         }}
         size="large"
-        className="bg-red-500 hover:!bg-red-600 mt-4"
+        className="!bg-red-500 hover:!bg-red-600 mt-4"
         type="primary"
       >
         Read More
