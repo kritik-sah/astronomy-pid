@@ -1,56 +1,59 @@
 "use client";
-"use strict";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { ReactElement, useEffect, useRef } from "react";
-import { ItemLoading } from "../PictureCard/PictureCard";
-import MysnoryLayout from "../PictureCard/MysnoryLayout";
-// import { ItemLoading } from "./Item";
+import InfiniteScroll from "react-infinite-scroll-component";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import CardWrapper from "../PictureCard/CardWrapper";
 
-export function InfiniteScrollWrapper({ children }) {
-  const ref = useRef(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const api = process.env.NEXT_PUBLIC_API;
+
+export function InfiniteScrollWrapper() {
+  const [posts, setPosts] = useState([]);
+  const [latest, setLatest] = useState(null);
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
 
   useEffect(() => {
-    let observerRefValue = null; // <-- variable to hold ref value
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Ugly, I know
-        if (entry.isIntersecting) {
-          router.replace(
-            `?page=${parseInt(searchParams.get("page") ?? "0") + 1}`
-          );
-          router.refresh();
-          console.log("loading more");
-        }
-      },
-      { rootMargin: "0px" }
+    getStartEndDates();
+  }, []);
+
+  const fetchData = async (startDate, endDate) => {
+    const res = await axios.get(
+      `${api}${startDate ? "&start_date=" + startDate : null}${
+        endDate ? "&end_date=" + endDate : null
+      }`
     );
-    if (ref.current) {
-      observer.observe(ref.current);
-      observerRefValue = ref.current; // <-- save ref value
-    }
-    return () => {
-      if (observerRefValue) observer.unobserve(observerRefValue);
-    };
-  }, [router, searchParams]);
+    setPosts([...posts, ...res.data]);
+    getStartEndDates(latest);
+  };
+
+  const getStartEndDates = (latest) => {
+    let todaysDate = moment().format("YYYY-MM-DD"); // todays date
+    let endDate = latest
+      ? latest
+      : moment(todaysDate).subtract(8, "days").format("YYYY-MM-DD");
+    let startDate = moment(endDate).subtract(20, "days").format("YYYY-MM-DD");
+    setEnd(endDate);
+    setStart(startDate);
+    setLatest(startDate);
+  };
 
   return (
     <>
-      {children}
-      <MysnoryLayout>
-        <ItemLoading ref={ref} />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-        <ItemLoading />
-      </MysnoryLayout>
+      <InfiniteScroll
+        dataLength={posts.length} //This is important field to render the next data
+        next={() => fetchData(start, end)}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <CardWrapper data={posts} />
+      </InfiniteScroll>
     </>
   );
 }

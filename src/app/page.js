@@ -1,4 +1,3 @@
-import CardWrapper from "@/components/PictureCard/CardWrapper";
 import Spotlight from "@/components/Spotlight/Spotlight";
 import { Suspense } from "react";
 import Loading from "./Loading";
@@ -6,7 +5,7 @@ import { InfiniteScrollWrapper } from "@/components/infinitescroll/InfiniteScrol
 import moment from "moment/moment";
 import SimpleCardWrapper from "@/components/PictureCard/SimpleCardWrapper";
 
-let api = process.env.API;
+let api = process.env.NEXT_PUBLIC_API;
 
 let latestDate = moment().format("YYYY-MM-DD"); // todays date
 
@@ -25,52 +24,23 @@ async function getData(startDate, endDate) {
   return res.json();
 }
 
-export default async function Home({ searchParams }) {
-  const { page } = searchParams;
-
-  const intPage = parseInt(page ?? "0");
-  const todaysDate = moment().format("YYYY-MM-DD"); // todays date
-  const startDate = moment(
-    moment(todaysDate).subtract(7, "days").calendar()
-  ).format("YYYY-MM-DD"); // older dates - getting records for min 8 days
+export default async function Home() {
+  let todaysDate = moment().format("YYYY-MM-DD"); // todays date
+  const endDate = moment(todaysDate).subtract(1, "days").format("YYYY-MM-DD");
+  const startDate = moment(endDate).subtract(7, "days").format("YYYY-MM-DD"); // older dates - getting records for min 8 days
   latestDate = startDate;
-  const data = (await getData(startDate, todaysDate)).reverse();
-
-  return (
-    <main>
-      <Spotlight data={data[0]} />
-      <SimpleCardWrapper
-        data={data.slice(1, data.length)}
-        title="Best of last 7 days."
-      />
-
-      <InfiniteScrollWrapper>
-        <>
-          {[...Array(intPage + 1)].map((_, index) => {
-            const limit = latestDate;
-            const start = moment(
-              moment(limit).subtract(10, "days").calendar()
-            ).format("YYYY-MM-DD"); // older dates - start date
-            latestDate = start;
-
-            return <Page start={start} limit={limit} key={start} />;
-          })}
-        </>
-      </InfiniteScrollWrapper>
-    </main>
-  );
-}
-
-async function Page({ start, limit }) {
-  let url = `${api}${start ? "&start_date=" + start : null}${
-    limit ? "&end_date=" + limit : null
-  }`;
-  const response = await fetch(url);
-  const data = (await response.json()).reverse();
+  const data = (await getData(startDate, endDate)).reverse();
 
   return (
     <Suspense fallback={<Loading />}>
-      <CardWrapper data={data.slice(1, data.length)} />
+      <main>
+        <Spotlight data={data[0]} />
+        <SimpleCardWrapper
+          data={data.slice(1, data.length)}
+          title="Best of last 7 days."
+        />
+        <InfiniteScrollWrapper />
+      </main>
     </Suspense>
   );
 }
