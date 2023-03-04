@@ -1,19 +1,14 @@
 import React from "react";
 import PictureCard from "./PictureCard";
+import MysnoryLayout from "./MysnoryLayout";
 
 const CardWrapper = ({ data }) => {
   return (
-    <div className="card-wrapper">
+    <MysnoryLayout>
       {data.map((card, i) => (
         <PictureCard key={i} data={card} />
       ))}
-
-      <div className="w-[280px]"></div>
-      <div className="w-[280px]"></div>
-      <div className="w-[280px]"></div>
-      <div className="w-[280px]"></div>
-      <div className="w-[280px]"></div>
-    </div>
+    </MysnoryLayout>
   );
 };
 
