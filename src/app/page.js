@@ -54,7 +54,6 @@ export default async function Home({ searchParams }) {
             ).format("YYYY-MM-DD"); // older dates - start date
             latestDate = start;
 
-            /** @ts-ignore */
             return <Page start={start} limit={limit} key={start} />;
           })}
         </>

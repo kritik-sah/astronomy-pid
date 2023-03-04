@@ -1,5 +1,4 @@
 import React from "react";
-import { Skeleton } from "antd";
 const Loading = () => {
   return (
     <div className="space-y-4">

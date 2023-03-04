@@ -1,4 +1,5 @@
 "use client";
+"use strict";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactElement, useEffect, useRef } from "react";
@@ -12,6 +13,7 @@ export function InfiniteScrollWrapper({ children }) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    let observerRefValue = null; // <-- variable to hold ref value
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Ugly, I know
@@ -27,9 +29,10 @@ export function InfiniteScrollWrapper({ children }) {
     );
     if (ref.current) {
       observer.observe(ref.current);
+      observerRefValue = ref.current; // <-- save ref value
     }
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (observerRefValue) observer.unobserve(observerRefValue);
     };
   }, [router, searchParams]);
 
