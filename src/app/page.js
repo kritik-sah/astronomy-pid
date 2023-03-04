@@ -6,8 +6,7 @@ import { InfiniteScrollWrapper } from "@/components/infinitescroll/InfiniteScrol
 import moment from "moment/moment";
 import SimpleCardWrapper from "@/components/PictureCard/SimpleCardWrapper";
 
-let api =
-  "https://api.nasa.gov/planetary/apod?api_key=gaff4Pwpu0Qg6woyFty1YhVRxhj4In1ImvOCyFD7&thumbs=true";
+let api = process.env.API;
 
 let latestDate = moment().format("YYYY-MM-DD"); // todays date
 
