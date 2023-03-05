@@ -13,6 +13,8 @@ tools used
 11. react-masonry-css - for masonry Picture Cards
 
 Explanary video : https://youtu.be/9JZhs__Awso
+live Demo : https://astronomy-pid.vercel.app/
+My Portfolio : https://kritik.servicesstrategy.com/
 
 Note:
 
