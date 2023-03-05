@@ -24,7 +24,7 @@ export function InfiniteScrollWrapper() {
         endDate ? "&end_date=" + endDate : null
       }`
     );
-    setPosts([...posts, ...res.data]);
+    setPosts([...posts, ...res.data.reverse()]);
     getStartEndDates(latest);
   };
 
@@ -32,11 +32,12 @@ export function InfiniteScrollWrapper() {
     let todaysDate = moment().format("YYYY-MM-DD"); // todays date
     let endDate = latest
       ? latest
-      : moment(todaysDate).subtract(8, "days").format("YYYY-MM-DD");
+      : moment(todaysDate).subtract(9, "days").format("YYYY-MM-DD");
     let startDate = moment(endDate).subtract(20, "days").format("YYYY-MM-DD");
+    let latestDate = moment(startDate).subtract(1, "days").format("YYYY-MM-DD");
     setEnd(endDate);
     setStart(startDate);
-    setLatest(startDate);
+    setLatest(latestDate);
   };
 
   return (

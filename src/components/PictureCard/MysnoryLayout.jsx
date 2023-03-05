@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Masonry from "react-masonry-css";
 
