@@ -12,9 +12,10 @@ tools used
 10. react-infinite-scroll-component - for client side infinitescroll
 11. react-masonry-css - for masonry Picture Cards
 
-Explanary video : https://youtu.be/9JZhs__Awso
-live Demo : https://astronomy-pid.vercel.app/
-My Portfolio : https://kritik.servicesstrategy.com/
+- Explanary video : https://youtu.be/9JZhs__Awso
+- live Demo : https://astronomy-pid.vercel.app/
+- My Portfolio : https://kritik.servicesstrategy.com/
+- github : https://github.com/kritik-sah/astronomy-pid
 
 Note:
 
