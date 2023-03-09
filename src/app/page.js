@@ -13,7 +13,8 @@ async function getData(startDate, endDate) {
   const res = await fetch(
     `${api}${startDate ? "&start_date=" + startDate : null}${
       endDate ? "&end_date=" + endDate : null
-    }`
+    }`,
+    { next: { revalidate: 1 * 24 * 60 * 60 } } // day * 24 hrs * 60 mins * 60 seconds
   );
 
   if (!res.ok) {
